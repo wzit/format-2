@@ -1,6 +1,6 @@
 #compiler settings for project
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++11 -stdlib=libc++ -DGLEW_STATIC ${CMAKE_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -DGL_DEBUG")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++11 -stdlib=libc++ ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE} -O5")
 
 # build googletest first
