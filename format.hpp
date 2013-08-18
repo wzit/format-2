@@ -45,7 +45,11 @@ inline std::string format_helper(const std::string &str, const size_t arg_to_rep
 
 
 namespace ext {
-
+/// @brief printf-like variadic function that supports user defined types
+/// @param format_str The format string containing format specifiers %1, %2, etc.
+/// @param args       Variadic pack of objects to to print.
+/// @return The format_str with the format specifiers appropriately replaced.
+/// @details Used as: st::cout << ext::format("%1 + %2 * %1 = %3", 5, 10.55, 5 + 10.55 * 5);
 template <typename... Args>
 inline std::string format(const std::string &format_str, Args &&...args) {
   return format_helper(format_str, 1, std::forward<Args>(args)...);
