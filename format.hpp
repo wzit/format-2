@@ -46,10 +46,10 @@ inline void format_helper(size_t arg_index, std::string &str, T &&val, Args &&..
 namespace ext {
 
 template <typename... Args>
-inline std::string format(const char *s, Args&&... args) {
+inline const char *format(const char *s, Args&&... args) {
   std::string str{s};
   format_helper(1, str, std::forward<Args>(args)...);
-  return str;
+  return str.c_str();
 }
 
 } // namespace ext
