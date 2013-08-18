@@ -30,15 +30,15 @@ THE SOFTWARE.
 
 namespace {
 
-inline const std::string format_helper(size_t, const std::string &str) {
+inline std::string format_helper(const std::string &str, const size_t) {
   return str;
 }
 
 template <typename T, typename... Args>
-inline const std::string format_helper(size_t arg_index, const std::string &str, T &&val, Args &&...args) {
-  return format_helper(arg_index + 1, 
-      std::regex_replace(str, std::regex{"%" + std::to_string(arg_index)}, (std::ostringstream{} << val).str()), 
-      std::forward<Args>(args)...);
+inline std::string format_helper(const std::string &str, const size_t arg_to_replace, T &&val, Args &&...args) {
+  return format_helper( std::regex_replace(
+      str, std::regex{"%" + std::to_string(arg_to_replace)}, (std::ostringstream{} << val).str()), 
+      arg_to_replace + 1, std::forward<Args>(args)...);
 }
 
 } // namespace
@@ -47,8 +47,8 @@ inline const std::string format_helper(size_t arg_index, const std::string &str,
 namespace ext {
 
 template <typename... Args>
-inline std::string format(const std::string format_str, Args &&...args) {
-  return format_helper(1, format_str, std::forward<Args>(args)...);
+inline std::string format(const std::string &format_str, Args &&...args) {
+  return format_helper(format_str, 1, std::forward<Args>(args)...);
 }
 
 } // namespace ext
