@@ -39,6 +39,7 @@ inline void format_helper(size_t arg_index, std::string &str, T &&val, Args &&..
   str = std::regex_replace(str, std::regex{"%" + std::to_string(arg_index)}, (std::ostringstream{} << val).str());
   format_helper(++arg_index, str, std::forward<Args>(args)...);
 }
+
 } // namespace
 
 
