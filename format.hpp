@@ -1,5 +1,8 @@
 #ifndef EXT_FORMAT_HPP__
 #define EXT_FORMAT_HPP__
+// ext::format
+// Implements a variadic printf-like function providing behavior similar to
+// boost::format
 /*
 The MIT License (MIT)
 
@@ -30,31 +33,37 @@ THE SOFTWARE.
 
 namespace {
 
-inline std::string format_helper(const std::string &str, const size_t) {
-  return str;
+inline std::string format_helper(
+    const std::string &string_to_update, 
+    const size_t) {
+  return string_to_update;
 }
 
 template <typename T, typename... Args>
-inline std::string format_helper(const std::string &str, const size_t arg_to_replace, T &&val, Args &&...args) {
-  return format_helper( std::regex_replace(
-      str, std::regex{"%" + std::to_string(arg_to_replace)}, (std::ostringstream{} << val).str()), 
-      arg_to_replace + 1, std::forward<Args>(args)...);
+inline std::string format_helper(
+    const std::string &string_to_update, 
+    const size_t index_to_replace, 
+    T &&val,
+    Args &&...args) {  
+  std::regex pattern{"%" + std::to_string(index_to_replace)};
+  std::string replacement_string{(std::ostringstream{} << val).str()};
+  return format_helper(
+      std::regex_replace(string_to_update, pattern, replacement_string), 
+      index_to_replace + 1, 
+      std::forward<Args>(args)...);
 }
 
 } // namespace
 
 
 namespace ext {
-/// @brief printf-like variadic function that supports user defined types
-/// @param format_str The format string containing format specifiers %1, %2, etc.
-/// @param args       Variadic pack of objects to to print.
-/// @return The format_str with the format specifiers appropriately replaced.
-/// @details Used as: st::cout << ext::format("%1 + %2 * %1 = %3", 5, 10.55, 5 + 10.55 * 5);
+
 template <typename... Args>
-inline std::string format(const std::string &format_str, Args &&...args) {
-  return format_helper(format_str, 1, std::forward<Args>(args)...);
+inline std::string format(const std::string &format_string, Args &&...args) {
+  return format_helper(format_string, 1, std::forward<Args>(args)...);
 }
 
 } // namespace ext
 
 #endif
+
